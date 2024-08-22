@@ -83,21 +83,24 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background-color:#001529;
+  ;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
 
 a {
   color: inherit;
   text-decoration: none;
+}
+.Nasdaq{
+    align-items: center;
+    justify-content: center;
+}
+.Splash{
+}
+
+.main{
+    align-items: center;
 }
 
 @media (prefers-color-scheme: dark) {
