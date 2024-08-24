@@ -1,0 +1,18 @@
+.Nasdaq{
+    align-items: center;
+    justify-content: center;
+}
+.Splash{
+    height:100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: #fff;
+    background-color:#001529;
+}
+.subtitle{
+    margin-top: 40px;
+    font-weight: 400;
+    font-size: 25px;
+}

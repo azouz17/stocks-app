@@ -1,0 +1,18 @@
+.Header{
+    background-color: #001529;
+    height: 90px;
+    align-items: center;
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center items vertically */
+}
+
+.Nasdaq{
+    align-items: center;
+}
+
+.InputForm{
+    justify-content: center;
+}
+.Cards{
+    margin-top: 20px;
+}

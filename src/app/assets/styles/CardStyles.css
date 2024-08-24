@@ -1,0 +1,46 @@
+.Card{
+    max-width: 302px;
+    border-radius: 20px;
+    border: 1px solid #D9D9D9;
+    background-color: #fff;
+    height:96px
+}
+
+.CardContent{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo{
+    border-radius: 50px;
+    width: 64px;
+    height: 64px;
+    background-color: #FFD8BF;
+    color: #FA541C;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p{
+        margin-bottom: 2px;
+    }
+}
+
+.StockInfo{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ticker{
+    font-weight: 700;
+}
+.stockName{
+    color: #707070;
+    font-weight: 300
+}
