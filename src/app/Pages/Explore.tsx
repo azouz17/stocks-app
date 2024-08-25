@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { Breadcrumb, Layout, Menu, theme, Input,Col, Row} from 'antd';
 import Image from 'next/image'
@@ -49,11 +50,13 @@ const Explore = () => {
             </Col>
         </Row>
         <Row className="Cards">
-            <Col span={6}>
+            
             {stockData.map((stock, index) => (
-        <StockCard key={index} stock={stock} />
+                <Col span={6}>
+                    <StockCard key={index} stock={stock} />
+                </Col>
                 ))}
-            </Col>
+            
         </Row>
       </Content>
 
