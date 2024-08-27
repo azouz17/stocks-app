@@ -1,0 +1,21 @@
+.container{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin-top: 88px;
+}
+
+.Description{
+    font-weight:400;
+    line-height: 32px;
+    font-size: 24px;
+    margin-top: 24px;
+}
+
+.Button{
+    line-height: 22px;
+    size: 14px;
+    font-weight: 400;
+    margin-top: 24px;
+}

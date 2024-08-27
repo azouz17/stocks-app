@@ -15,4 +15,26 @@
 }
 .Cards{
     margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.Content{
+    padding: 0 48px;
+     margin-top:20px;
+     min-height: 100vh;
+}
+
+.Layout{
+    min-height:100vh
+}
+.Column{
+    margin-top: 20px;
+}
+
+.CardContainer{
+    display: flex;
+    flex-direction: column;
 }

@@ -2,9 +2,18 @@ import React from 'react'
 import '../assets/styles/CardStyles.css'
 
 type Stock = {
-    abb: string,
+    active: Boolean,
+    cik: string,
+    composite_figi: string,
+    currency_name:string,
+    last_updated_utc: string,
+    locale: string,
+    market: string,
+    name: string,
+    primary_exchange: string,
+    share_class_figi: string,
     ticker: string,
-    name: string
+    type: string
 }
 type StockType = {
     stock: Stock
@@ -16,7 +25,7 @@ const StockCard: React.FC<StockType> = ({stock}) => {
         <div className='CardContent'>
             <div className='logo'>
                 <p>
-                    {stock.abb}
+                    {stock.ticker}
                 </p>
             </div>
             <div className='StockInfo'>
