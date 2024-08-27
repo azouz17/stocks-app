@@ -80,7 +80,7 @@ const Explore = () => {
         else{
             return data?.results.map((stock: StockType, key:number)=>{
                 return(
-                    <Col className='Column' span={6}>
+                    <Col key={key} className='Column' span={6}>
                         <StockCard stock={stock} />
                     </Col>
                 )
