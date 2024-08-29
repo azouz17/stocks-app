@@ -21,6 +21,11 @@
     margin-bottom: 25px;
 }
 
+.card{
+    display: flex;
+    flex-direction: column;
+}
+
 .Content{
     padding: 0 48px;
      margin-top:20px;
@@ -37,4 +42,17 @@
 .CardContainer{
     display: flex;
     flex-direction: column;
+}
+.errors{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:20px;
+    flex-direction: column;
+    
+}
+
+.Spin{
+    margin-top: 20px;
+    margin-bottom: 15px;
 }

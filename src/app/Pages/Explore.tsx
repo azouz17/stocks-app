@@ -1,5 +1,5 @@
 
-import React , {useState} from 'react'
+import React , {useEffect, useState, memo} from 'react'
 import { Breadcrumb, Layout, Menu, theme, Button, Input,Col, Row, Spin, Space} from 'antd';
 import Image from 'next/image'
 import Nasdaq from '../assets/Nasdaq.png'
@@ -9,6 +9,7 @@ import StockCard  from '../Components/StockCard'
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import StockNotFound from '../Components/StockNotFound'
 import Timeout from '../Components/Timeout'
+import {useInView} from 'react-intersection-observer'
 
 const { Header, Content, Footer } = Layout;
 const { Search } = Input;
@@ -34,63 +35,98 @@ const Explore = () => {
     const [query , setQuery]:[string,any] = useState("")
     const [noResults, setNoResults]:[Boolean, any] = useState(false)
     const [TooManyRequests, SetTooManyRequests]:[Boolean, any] = useState(false)
-    async function fetchStocks (value: string){
-        try{
-            const response = await fetch(`https://api.polygon.io/v3/reference/tickers?ticker=${value}&limit=24&apiKey=ZxXSYSrzpVv1RCNaE8gAXE0XJOhp96gh`,{
-            })
-            const json = await response.json()
-            if(json.status == "ERROR"){
-                setNoResults(false)
-                SetTooManyRequests(true)   
-                return 
-            }
-            if(json.status == "OK"){
-                if(json.results.length <= 0){
-                    setNoResults(true)
-                    return json
-                }
-                setNoResults(false)
-                SetTooManyRequests(false)
-                return json
-            }
-            
-            else{
-                setNoResults(true)
-            }
-        }
-        catch(error){
-            console.log(error)
-        }
-    }
+    const {ref , inView} = useInView()
+    const [showData, setShowData]:[Boolean, any] = useState(true)
+    
 
-    const{
-        data,
-        isLoading,
-        isPending,
-        isError,
-    } = useQuery({
-        queryKey: [`stocks-${query}`],
-        queryFn: () =>fetchStocks(query),
-    })
-
-    function renderStocks(){
-        if(data?.count <= 0 || data?.status != 'OK'){
-            return 
+    async function fetchStocks(value: string, pageParam: string = "") {
+        const LIMIT = 24;
+        let url = ""
+        if(pageParam == ""){
+            url = `https://api.polygon.io/v3/reference/tickers?search=${value}&limit=${LIMIT}&cursor=${pageParam}&apiKey=ZxXSYSrzpVv1RCNaE8gAXE0XJOhp96gh`
         }
         else{
-            return data?.results.map((stock: StockType, key:number)=>{
-                return(
-                    <Col key={key} className='Column' span={6}>
-                        <StockCard stock={stock} />
-                    </Col>
-                )
-            })
+            url = pageParam+"&apiKey=ZxXSYSrzpVv1RCNaE8gAXE0XJOhp96gh"
+        }
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            console.log(json)
+    
+            if (json.status === "ERROR") {
+                setShowData(false)
+                setNoResults(false);
+                SetTooManyRequests(true);
+                console.log('Error')
+                return { data: null, nextPage: pageParam };
+            }
+    
+            if (json.status === "OK") {
+                setShowData(true);
+                if (json.results.length <= 0) {
+                    setNoResults(true);
+                    return { data: json, nextPage: null }; 
+                }
+                setNoResults(false);
+                SetTooManyRequests(false);
+
+    
+                return {
+                    data: json,
+                    nextPage: json.next_url ? json.next_url : null, 
+                };
+            } else {
+                setNoResults(true);
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
+    
+    const {
+        data,
+        error,
+        isFetching,
+        isLoading,
+        status,
+        fetchNextPage, 
+        hasNextPage,  
+    } = useInfiniteQuery({
+        queryKey: [`stocks-${query}`],
+        queryFn: ({ pageParam = "" }) => fetchStocks(query, pageParam),
+        initialPageParam: "",
+        getNextPageParam: (lastPage) => lastPage?.nextPage ?? null,  
+    });
+    
+    useEffect(() =>{
+        if(inView && hasNextPage){
+            fetchNextPage();
+        }
+    }, [fetchNextPage,  inView])
+
+    function renderStocks() {
+        if (!data){
+            return null;
+        } 
+        return data.pages.map((page, pageIndex) =>
+            page?.data?.results?.map((stock: StockType, stockIndex: number) => (
+                <Col key={`${pageIndex}-${stock.ticker}`} className='Column' span={6}>
+                    <StockCard stock={stock} />
+                </Col>
+            ))
+        );
+    }
+    
     const handleChange = (event:any) =>{
+        if(query == event){
+            fetchStocks(query)
+            return
+        }
         setQuery(event)
+
     }
     const clear = ()=>{
+        setNoResults(false)
         setQuery('')
     }
   return (
@@ -115,14 +151,22 @@ const Explore = () => {
             />
             </Col>
         </Row>
-        <Row className="Cards">
         <div className='CardContainer'> 
-                {isLoading && <Spin />} 
+        {isLoading  && <Spin  className="Spin"/>} 
+        <Row className="Cards">
+                {!isLoading  && renderStocks()} 
+        </Row>  
+        <Row className="errors">
+            <Col span={12} className="errors">
                 {noResults  && <StockNotFound />}
                 {TooManyRequests  && <Timeout />}
-            </div>
-            {!isLoading && renderStocks()} 
-        </Row>
+                {isFetching && !isLoading && <Spin className='Spin'/>}
+            </Col>
+        </Row> 
+        </div>
+        <div  ref={ref}>
+
+        </div>
       </Content>
     </Layout>
         

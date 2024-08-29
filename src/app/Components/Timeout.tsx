@@ -9,7 +9,7 @@ const Timeout = () => {
     <div className='container'>
     <Image className="Image" src={closeCircle}  alt="Stock Not Found" width={80} height={80}/>
     <p className="Description">You have reached the maximum number of requests</p>
-    <Button className="Button" size='middle' type='primary' >Retry</Button>
+    <Button className="Button" size='middle' type='primary'>Retry</Button>
     </div>
   )
 }
