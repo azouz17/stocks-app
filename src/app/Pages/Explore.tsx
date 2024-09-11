@@ -118,12 +118,7 @@ const Explore = () => {
     }
     
     const handleChange = (event:any) =>{
-        if(query == event){
-            fetchStocks(query)
-            return
-        }
         setQuery(event)
-
     }
     const clear = ()=>{
         setNoResults(false)
